@@ -1,0 +1,28 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
+# this is a template file
+# you should change "_shell-scaffold" to your app name
+
+_shell-scaffold() {
+	local cur prev base cmd subcmd opts
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	base="${COMP_WORDS[0]}"
+	cmd="${COMP_WORDS[1]}"
+	subcmd="${COMP_WORDS[2]}"
+
+	case "${cmd}" in
+	completion)
+		[[ $COMP_CWORD -gt 2 ]] && return 1
+		opts="bash"
+		;;
+	*)
+		# no command
+		[[ $COMP_CWORD -gt 1 ]] && return 1
+		opts="renew implode version help completion"
+		;;
+	esac
+	mapfile -t COMPREPLY < <(compgen -W "${opts}" -- "${cur}")
+	return 0
+}
+complete -F _shell-scaffold shell-scaffold

@@ -1,0 +1,33 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+check_tools() {
+	local warning_msg=""
+	local tools=("git" "curl")
+
+	for tool in "${tools[@]}"; do
+		# if tool depends version, should check seperate
+		case "$tool" in
+		*)
+			tool_check "$tool" || warning_msg="${warning_msg}
+Could not find $tool command!
+"
+			;;
+		esac
+	done
+	# for unalias bin tool
+	SED_PATH=$(tool_path sed) || warning_msg="${warning_msg}
+Could not find sed command!
+"
+	CAT_PATH=$(tool_path cat) || warning_msg="${warning_msg}
+Could not find cat command!
+"
+
+	if [ -n "$warning_msg" ]; then
+		log_warning "$warning_msg"
+		exit 1
+	fi
+	unset warning_msg
+}
+
+check_tools
+unset -f check_tools

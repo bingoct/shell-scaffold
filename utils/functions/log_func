@@ -1,0 +1,57 @@
+#!/bin/bash
+
+log_msg() {
+	if [[ "$TPUT_COLOR" == "True" ]]; then
+		tput sgr0
+		tput setaf "$COLOR_WHITE"
+		echo -e "$1"
+		tput sgr0
+	else
+		echo -e "$1"
+	fi
+}
+
+log_info() {
+	if [[ "$TPUT_COLOR" == "True" ]]; then
+		tput sgr0
+		tput setaf "$COLOR_GREEN"
+		echo -e "$1"
+		tput sgr0
+	else
+		echo -e "$1"
+	fi
+}
+
+log_warning() {
+	if [[ "$TPUT_COLOR" == "True" ]]; then
+		tput sgr0
+		tput setaf "$COLOR_YELLOW"
+		echo -e "[$(date "$TIME_FORMAT")] WARNING ===> $1"
+		tput sgr0
+	else
+		echo -e "[$(date "$TIME_FORMAT")] WARNING ===> $1"
+	fi
+}
+
+log_error() {
+	if [[ "$TPUT_COLOR" == "True" ]]; then
+		tput sgr0
+		tput setaf "$COLOR_RED"
+		echo -e "[$(date "$TIME_FORMAT")] ERROR ===> $1" >&2
+		tput sgr0
+	else
+		echo -e "[$(date "$TIME_FORMAT")] ERROR ===> $1" >&2
+	fi
+}
+
+log_fatal() {
+	if [[ "$TPUT_COLOR" == "True" ]]; then
+		tput sgr0
+		tput setaf "$COLOR_RED"
+		echo -e "[$(date "$TIME_FORMAT")] FATAL ===> $1" >&2
+		tput sgr0
+	else
+		echo -e "[$(date "$TIME_FORMAT")] FATAL ===> $1" >&2
+	fi
+	exit 1
+}

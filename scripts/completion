@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [[ "$#" -eq 0 ]]; then
+	clear
+	log_info "choice number of shell"
+	select c in bash Quit; do
+		case "$c" in
+		"bash")
+			shell_env="bash"
+			break
+			;;
+		"Quit")
+			exit
+			;;
+		*)
+			log_warning "Wrong choice, please input a number among!"
+			;;
+		esac
+	done
+else
+	shell_env="$1"
+fi
+clear
+case $shell_env in
+"bash")
+	$CAT_PATH "${INSTALL_DIR}"/shell_completion/bash_completion
+	;;
+*)
+	log_error "Unknown shell: $shell_env"
+	exit 1
+	;;
+esac

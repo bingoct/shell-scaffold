@@ -1,0 +1,15 @@
+#!/bin/bash
+[[ -d $INSTALL_DIR/.git ]] || mv "$INSTALL_DIR/git.bak" "$INSTALL_DIR/.git" &>/dev/null ||
+	log_fatal "Couldn't find git info"
+
+cd "$INSTALL_DIR" || log_fatal "Couldn't access $INSTALL_DIR"
+
+if [[ -n $1 ]]; then
+	git checkout "$1" -f || log_fatal "Failed to checkout $1 branch"
+else
+	git checkout -f || log_fatal "Failed to clean install"
+fi
+
+git pull || log_fatal "Failed to update"
+
+mv ".git" "git.bak" || log_fatal "Couldn't backup git info"

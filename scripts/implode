@@ -1,0 +1,17 @@
+#!/bin/bash
+flag=""
+if [[ "$#" -gt 0 ]]; then
+	if [[ "$1" =~ ^-[Yy]$ ]]; then
+		flag="y"
+	fi
+else
+	clear
+	log_msg "Are you sure to $(red_hgl "remove $APP_NAME")? [y/n]"
+	read -n 1 -r flag
+	echo
+fi
+if [[ ! $flag =~ ^[Yy]$ ]]; then
+	log_warning "Uninstall action cancelled"
+else
+	(rm -rf "$INSTALL_DIR" && log_info "$(red_hgl "$APP_NAME") uninstall successfully removed") || log_error "Failed to uninstall $(red_hgl "$APP_NAME")"
+fi

@@ -1,0 +1,8 @@
+#!/bin/bash
+trap_err() {
+	local ret=$? cmd="$BASH_COMMAND" f="$1" lino="${BASH_LINENO[0]}"
+	log_error "exit with code $ret:
+FILE: $f $lino
+COMMAND: $cmd \n"
+	exit "$ret"
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+# hgl means highlight
+blue_hgl() {
+	if [[ "$COLOR_PROMPRT" == "True" ]]; then
+		echo "${FG_BLUE}$1${COLOR_CLEAR}"
+	else
+		echo "$1"
+	fi
+}
+
+yellow_hgl() {
+	if [[ "$COLOR_PROMPRT" == "True" ]]; then
+		echo "${FG_YELLOW}$1${COLOR_CLEAR}"
+	else
+		echo "$1"
+	fi
+}
+
+red_hgl() {
+	if [[ "$COLOR_PROMPRT" == "True" ]]; then
+		echo "${FG_RED}$1${COLOR_CLEAR}"
+	else
+		echo "$1"
+	fi
+}

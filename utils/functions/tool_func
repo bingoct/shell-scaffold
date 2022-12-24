@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tool_check() {
+	command -v "$1" &>/dev/null
+}
+
+tool_path() {
+	unalias "$1" &>/dev/null
+	command -v "$1"
+}

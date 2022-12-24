@@ -1,0 +1,57 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC1091
+set -Eu
+
+usage_help() {
+	log_msg "$(yellow_hgl Description):
+  $APP_NAME is a CLI simple shell scaffold
+$(yellow_hgl Usage):
+  $APP_NAME [command]
+$(yellow_hgl Commands):
+  $(blue_hgl version)      - print version
+  $(blue_hgl renew)        - tool self-renewal
+  $(blue_hgl implode)      - uninstall this tool
+  $(blue_hgl completion)   - auto tab completion
+  $(blue_hgl "-h, help")     - show usage text
+"
+}
+
+import_env() {
+	if ! . "${APP_ROOT}/.env"; then
+		echo "Missing env file, please check the install directory or environment variable"
+		exit 1
+	fi
+	. "$INSTALL_DIR"/utils/check_tools || log_fatal "Mission check_tools. Please check file completeness\n"
+}
+
+main() {
+	if [[ "$#" -eq 0 ]]; then
+		usage_help
+		exit 1
+	fi
+	local cmd
+	cmd="$1"
+	case $cmd in
+	"help" | "-h")
+		usage_help
+		exit 0
+		;;
+	"version")
+		log_msg "$APP_NAME ${FG_BLUE}v$APP_VERSION${COLOR_CLEAR} installed at ${FG_BLUE}$INSTALL_DIR${COLOR_CLEAR}"
+		;;
+	*)
+		if [ -f "$INSTALL_DIR/scripts/$cmd" ]; then
+			shift
+			. "$INSTALL_DIR/scripts/$cmd" "$@"
+		elif [[ $cmd == "help" ]]; then
+			usage_help
+		else
+			log_fatal "Unrecognized cmd line argument: '$cmd', use -h or help to see usage"
+		fi
+		;;
+	esac
+}
+import_env
+unset -f import_env
+trap 'trap_err "${BASH_SOURCE:--}"' ERR
+main "$@"
